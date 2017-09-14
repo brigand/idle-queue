@@ -1,6 +1,6 @@
 {
   "name": "idle-queue",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "batches requestIdleCallback calls, honors the deadline",
   "main": "index.js",
   "scripts": {
