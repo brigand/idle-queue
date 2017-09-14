@@ -13,13 +13,21 @@ function makeQueue() {
   const estimates = [];
   const _getIndex = (callback) => callbacks.indexOf(callback);
 
+  const shouldRunCallback = (deadline, estimate = 0) => {
+    if (deadline.didTimeout) return true;
+    const remaining = deadline.timeRemaining();
+    if (remaining <= 0) return true;
+    return remaining - estimate > 0;
+  };
+
   const runNow = (deadline) => {
+    running = false;
     let toRemove = 0;
     const _callbacks = callbacks.slice();
     const _estimates = estimates.slice();
     for (let i = 0; i < _callbacks.length; i += 1) {
       const estimate = _estimates[i];
-      if (deadline.timeRemaining() - estimate > 0) {
+      if (shouldRunCallback(deadline, _estimates[i])) {
         const callback = _callbacks[i];
         callback(deadline);
         toRemove = i + 1;
@@ -44,6 +52,7 @@ function makeQueue() {
     if (!rIC) {
       throw new TypeError(`idle-queue tried to run without requestIdleCallback being available`);
     };
+    running = true;
     rIC(runNow, { timeout });
   };
 
