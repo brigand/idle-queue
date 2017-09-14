@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src --out-dir lib --ignore src/__tests__",
     "test": "jest",
-    "prepublish": "npm run build",
+    "prepublish": "npm run test && npm run build",
     "demo": "browserify -t babelify demo/demo.js -o demo/demo.bundle.js"
   },
   "keywords": [

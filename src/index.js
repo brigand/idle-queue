@@ -45,10 +45,12 @@ function makeQueue() {
       drainPromise = null;
       drainResolve = null;
     }
+    startIfNeeded();
   };
 
   const startIfNeeded = () => {
     if (running) return;
+    if (callbacks.length === 0) return;
     if (!rIC) {
       throw new TypeError(`idle-queue tried to run without requestIdleCallback being available`);
     };
