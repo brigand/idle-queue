@@ -56,8 +56,8 @@ function makeQueue() {
   const has = (callback) => _getIndex(callback) !== -1;
   const push = (func, opts) => {
     callbacks.push(func);
-    if (opts && opts.estimate) {
-      estimate.push(opts.estimate);
+    if (opts && typeof opts.estimate === 'number') {
+      estimates.push(opts.estimate);
     } else {
       estimates.push(1);
     }

@@ -2,7 +2,7 @@
   "name": "idle-queue",
   "version": "0.2.0",
   "description": "batches requestIdleCallback calls, honors the deadline",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "babel src --out-dir lib --ignore src/__tests__",
     "test": "jest",

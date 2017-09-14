@@ -57,6 +57,15 @@ it(`doesn't trigger callbacks added while runNow is executing`, () => {
   expect(second).toHaveBeenCalled();
 });
 
+it(`works with estimate`, () => {
+  const { queue, cb } = makeQueue();
+  const fn = jest.fn();
+  queue.push(fn, { estimate: 10 });
+  expect(fn).not.toHaveBeenCalled();
+  cb();
+  expect(fn).toHaveBeenCalled();
+});
+
 describe(`drain`, () => {
   it(`works on no callback registered`, () => {
     const { queue, cb } = makeQueue();

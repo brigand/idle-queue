@@ -1,4 +1,4 @@
-var idleQueue = require('../src/index.js');
+var idleQueue = require('../');
 
 idleQueue.push(() => {
   console.log('a');
