@@ -99,6 +99,7 @@ function makeQueue() {
     unqueue,
     runNow,
     drain,
+    setTimeout,
 
     // for our unit tests
     cbs: () => callbacks,
