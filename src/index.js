@@ -1,4 +1,6 @@
-function makeQueue() {
+const defaultOpts = { delayOnLoad: 1000 };
+
+function makeQueue(opts = defaultOpts) {
   let timeout = 500;
   let rIC = typeof requestIdleCallback === 'function'
     ? requestIdleCallback
@@ -48,6 +50,22 @@ function makeQueue() {
     startIfNeeded();
   };
 
+  let everLoaded = false;
+  const getAdjustedTimeout = () => {
+    if (!everLoaded && typeof window !== 'undefined' && opts && opts.delayOnLoad) {
+      const { performance } = window;
+      if (performance && performance.timing && performance.timing.loadEventEnd) {
+        const diff = Date.now() - window.performance.timing.loadEventEnd;
+        if (diff < opts.delayOnLoad) {
+          return opts.delayOnLoad - diff;
+        } else {
+          everLoaded = true;
+        }
+      }
+    }
+    return timeout;
+  };
+
   const startIfNeeded = () => {
     if (running) return;
     if (callbacks.length === 0) return;
@@ -55,7 +73,7 @@ function makeQueue() {
       throw new TypeError(`idle-queue tried to run without requestIdleCallback being available`);
     };
     running = true;
-    rIC(runNow, { timeout });
+    rIC(runNow, { timeout: getAdjustedTimeout() });
   };
 
 
